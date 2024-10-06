@@ -4,16 +4,16 @@ require_once '../app/services/Database.php';
 
 class Usuario {
     private $id;
+    private $name;
     private $username;
-    private $password;
+    private $email;
     private $role;
 
-    private $pdo;
-
-    public function __construct($username, $password, $role = 'usuario') {
-        $this->pdo = Database::getConnection();
+    public function __construct($id = 0, $name = '', $username = '', $email = "", $role = 'usuario') {
+        $this->id = $id;
+        $this->name = $name;
         $this->username = $username;
-        $this->password = password_hash($password, PASSWORD_DEFAULT); // Almacenar la contraseña como un hash
+        $this->email = $email;
         $this->role = $role;
     }
     // Métodos getter
@@ -22,6 +22,14 @@ class Usuario {
     }
 
     public function getUsername() {
+        return $this->username;
+    }
+
+    public function getName() {
+        return $this->username;
+    }
+
+    public function getEmail() {
         return $this->username;
     }
 
@@ -34,16 +42,20 @@ class Usuario {
         return password_verify($password, $this->password);
     }
 
-    public function login($username, $password) {
-        $stmt = $this->pdo->prepare("SELECT * FROM usuarios WHERE username = :username AND password = :password");
-        $stmt->execute(['username' => $username, 'password' => $password]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+    public static function login($username) {
+        $stmt = Database::getConnection()->prepare("SELECT id, name, username, password, email, role FROM usuarios WHERE username = :username");
+        $stmt->bindParam(':username', $username);
+        $stmt->execute();
+                
+        return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
-    public function register() {        
-        $stmt = $this->pdo->prepare("INSERT INTO usuarios (username, password, role) VALUES (:username, :password, :role)");
+    public function register($password) {        
+        $stmt = Database::getConnection()->prepare("INSERT INTO usuarios (name, username, email, password, role) VALUES (:name, :username, :email, :password, :role)");
+        $stmt->bindParam(':name', $this->name);
         $stmt->bindParam(':username', $this->username);
-        $stmt->bindParam(':password', $this->password);
+        $stmt->bindParam(':email', $this->email);
+        $stmt->bindParam(':password', $password);
         $stmt->bindParam(':role', $this->role);
 
         return $stmt->execute();
@@ -61,7 +73,7 @@ class Usuario {
      * Obtiene un usuario por su ID
      */
     public function getUserById($id) {
-        $stmt = $this->pdo->prepare("SELECT * FROM usuarios WHERE id = :id");
+        $stmt = Database::getConnection()->prepare("SELECT * FROM usuarios WHERE id = :id");
         $stmt->execute(['id' => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
@@ -70,7 +82,7 @@ class Usuario {
      * Obtiene todos los usuarios
      */
     public function getAllUsers() {
-        $stmt = $this->pdo->query("SELECT * FROM usuarios");
+        $stmt = Database::getConnection()->query("SELECT * FROM usuarios");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -78,7 +90,7 @@ class Usuario {
      * Cambia la información de un usuario
      */
     public function updateUser($id, $username, $password, $role) {
-        $stmt = $this->pdo->prepare("UPDATE usuarios SET username = :username, password = :password, role = :role WHERE id = :id");
+        $stmt = Database::getConnection()->prepare("UPDATE usuarios SET username = :username, password = :password, role = :role WHERE id = :id");
         return $stmt->execute(['username' => $username, 'password' => $password, 'role' => $role, 'id' => $id]);
     }
 
@@ -86,7 +98,7 @@ class Usuario {
      * Elimina un usuario por su ID
      */
     public function deleteUser($id) {
-        $stmt = $this->pdo->prepare("DELETE FROM usuarios WHERE id = :id");
+        $stmt = Database::getConnection()->prepare("DELETE FROM usuarios WHERE id = :id");
         return $stmt->execute(['id' => $id]);
     }
 }

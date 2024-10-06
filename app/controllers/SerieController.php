@@ -1,7 +1,9 @@
 <?php
-// SeriesController.php
+require_once '../app/models/Serie.php';
+require_once '../app/services/Logger.php';
+require_once '../app/controllers/Controller.php';
 
-class SeriesController {
+class SerieController {
     private $serieModel;
 
     public function __construct() {
@@ -17,15 +19,24 @@ class SeriesController {
                 $this->serieModel->addSerie($titulo, $descripcion);
                 // Redirigir a la lista de series
             }
-            include 'app/views/series/add.php';
+            include '../app/views/serie/add.php';
         } else {
             // Mostrar error: acceso no permitido
         }
     }
 
     public function index() {
-        $series = $this->serieModel->getAllSeries();
-        include 'app/views/series/index.php';
+        $seriesBD = $this->serieModel->getAllSeries();
+        $series = [];
+
+        //Hay que mostrar la puntuación media de cada serie
+        foreach ($seriesBD as $serieBD) {
+            $serie = new Serie($serieBD['id'], $serieBD['titulo'], $serieBD['descripcion']);            
+            $serie->setPuntuacionMedia($serie->getAverageRating());
+            $series[] = $serie;
+        }
+
+        include '../app/views/serie/index.php';
     }
 
     public function rateSerie($id) {
@@ -34,7 +45,7 @@ class SeriesController {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $puntuacion = $_POST['puntuacion'];
                 $this->serieModel->rateSerie($id, $puntuacion);
-                // Redirigir a la lista de series
+                // Redirigir a la lista de serie
             }
         } else {
             // Mostrar error: acceso no permitido
