@@ -16,3 +16,12 @@ a {
 a:hover {
     text-decoration: underline;
 }
+.estrella{
+    cursor: pointer;
+}
+.estrella_vacia{
+    opacity: 0.2   ;
+}
+header {
+    padding: 10px 0;
+}

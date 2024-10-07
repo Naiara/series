@@ -1,21 +1,20 @@
-<?php include_once '../app/views/general/encabezado.php';?>
+<?php include_once '../app/views/general/header.php';?>
 <h1>Series</h1>
+<table class="table">
 <?php foreach ($series as $serie): ?>
-    <h2><?php echo $serie->getTitulo(); ?></h2>
-    <p><?php echo $serie->getDescripcion(); ?></p>
-    <p><?php echo $serie->getPuntuacionMedia(); ?></p>
-    <!-- <form method="POST" action="index.php?controller=serie&action=update">
-        <input type="number" name="puntuacion" min="1" max="5" required>
-        <input type="hidden" name="id" value="<?php //echo $serie->getId(); ?>">
-        <button type="submit">Puntuar</button>
-    </form> -->
-    <input type="hidden" name="id" value="<?php echo $serie->getId(); ?>">
-    <!-- segun la puntuación que tengas se enseñan numero de estrellas -->
-     <img class="star" data-value="1" src="../public/img/star.png" alt="star" width="20" height="20">
-     <img class="star" data-value="2" src="../public/img/star.png" alt="star" width="20" height="20">
-     <img class="star" data-value="3" src="../public/img/star.png" alt="star" width="20" height="20">
-     <img class="star" data-value="4" src="../public/img/star.png" alt="star" width="20" height="20">
-     <img class="star" data-value="5" src="../public/img/star.png" alt="star" width="20" height="20">
+            
+        <tr>
+            <td title="<?= $serie->getDescripcion(); ?>"><?php echo $serie->getTitulo(); ?></td>
+           <!--  <td><?php echo $serie->getDescripcion(); ?></td> -->
+            <td><?php 
+                $puntuacion = $serie->getPuntuacionMedia();
+                for ($i = 1; $i <= floor($puntuacion); $i++) {?>
+                    <img class="estrella" data-id="<?= $i ?>" src="/img/star.png" alt="star" width="20" height="20">
+                <?php }
+            ?></td>
+        </tr>
+       
 <?php endforeach; ?>
+</table>
 
 <?php include_once '../app/views/general/footer.php';?>

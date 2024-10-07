@@ -39,16 +39,41 @@ class SerieController {
         include '../app/views/serie/index.php';
     }
 
-    public function rateSerie($id) {
-        // Solo los usuarios normales pueden puntuar
-        if ($_SESSION['user']['role'] === 'usuario') {
+    /**
+     * Series con puntuación del usuario concreto
+     */
+    public function puntuar() {
+        $seriesBD = $this->serieModel->getAllSeries();
+        $series = [];
+
+        //Hay que mostrar la puntuación media de cada serie
+        foreach ($seriesBD as $serieBD) {
+            $serie = new Serie($serieBD['id'], $serieBD['titulo'], $serieBD['descripcion']);            
+            //$serie->setPuntuacionMedia($serie->getAverageRating());
+            $series[] = $serie;
+        }
+
+        include '../app/views/serie/indexUsuario.php';
+    }
+
+    public function puntuarSerie(){
+        if (isset($_SESSION['user'])) {
+            $id_usuario = $_SESSION['user']['id'];
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $puntuacion = $_POST['puntuacion'];
-                $this->serieModel->rateSerie($id, $puntuacion);
-                // Redirigir a la lista de serie
+                $data = json_decode(file_get_contents('php://input'), true);
+                $id_serie = $data['id'];
+                $puntuacion = $data['puntuacion'];
+                
+                $resultado = $this->serieModel->rateSerie($id_serie, $id_usuario, $puntuacion);
+                if ($resultado) {
+                    echo json_encode(['success' => true]);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'No se ha ejecutado correctamente la consulta']);
+                }
             }
         } else {
             // Mostrar error: acceso no permitido
+            echo json_encode(['success' => false, 'message' => 'Sessión no iciciada']);
         }
     }
 }

@@ -36,6 +36,14 @@ class Serie {
         $this->puntuacion_media = $pt;
     }
 
+    public function getPuntuacionUsuario() {
+        $stmt = Database::getConnection()->prepare("SELECT puntuacion FROM valoraciones WHERE usuario_id = :usuario_id AND serie_id = :serie_id");
+        $stmt->bindParam(':usuario_id', $_SESSION['user']['id']);
+        $stmt->bindParam(':serie_id', $this->id);
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
+
     /**
      * Añade una nueva serie a la base de datos
      */
@@ -64,9 +72,24 @@ class Serie {
     /**
      * Actualiza la información de una serie
      */
-    public function rateSerie($id, $puntuacion) {
-        $stmt = Database::getConnection()->prepare("INSERT INTO valoraciones (serie_id, puntuacion) VALUES (:serie_id, :puntuacion)");
-        return $stmt->execute(['serie_id' => $id, 'puntuacion' => $puntuacion]);
+    public function rateSerie($id_serie, $id_usuario, $puntuacion) {
+        //Comprobar si la serie ya ha sido puntuada por ese usuario
+        $stmt = Database::getConnection()->prepare("SELECT * FROM valoraciones WHERE usuario_id = :usuario_id AND serie_id = :serie_id");   
+        $stmt->bindParam(':usuario_id', $id_usuario);
+        $stmt->bindParam(':serie_id', $id_serie);
+        $stmt->execute();
+        if ($stmt->rowCount() > 0) {
+            //Actualizar la puntuación
+            $stmt = Database::getConnection()->prepare("UPDATE valoraciones SET puntuacion = :puntuacion WHERE usuario_id = :usuario_id AND serie_id = :serie_id");
+        }else{
+            //Insertar puntuación
+            $stmt = Database::getConnection()->prepare("INSERT INTO valoraciones (usuario_id, serie_id, puntuacion) VALUES (:usuario_id, :serie_id, :puntuacion)");
+        }
+
+        $stmt->bindParam(':usuario_id', $id_usuario);
+        $stmt->bindParam(':serie_id', $id_serie);
+        $stmt->bindParam(':puntuacion', $puntuacion);
+        return $stmt->execute();
     }
 
     /**
@@ -83,7 +106,7 @@ class Serie {
     public function getAverageRating() {
         $stmt = Database::getConnection()->prepare("SELECT AVG(puntuacion) AS puntuacion_media FROM valoraciones WHERE serie_id = :serie_id");
         $stmt->execute(['serie_id' => $this->id]);
-        return $stmt->fetchOne(PDO::FETCH_ASSOC);
+        return $stmt->fetchColumn();
     }
 
     /**
