@@ -1,7 +1,8 @@
 <?php include_once '../app/views/general/header.php';?>
 <h1>Series</h1>
 <table class="table">
-<?php foreach ($series as $serie): ?>
+<?php 
+foreach ($series as $serie): ?>
             
         <tr>
             <td title="<?= $serie->getDescripcion(); ?>"><?php echo $serie->getTitulo(); ?></td>

@@ -1,5 +1,5 @@
 <?php 
-    include '../app/views/general/do.php'; 
+    include '../app/views/general/header.php'; 
     if(isset($_SESSION['user'])){
         var_dump($_SESSION['user']) ;
     }else{

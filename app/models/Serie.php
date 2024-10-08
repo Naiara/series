@@ -64,8 +64,8 @@ class Serie {
     /**
      * Obtiene todas las series
      */
-    public function getAllSeries() {
-        $stmt = Database::getConnection()->query("SELECT id, titulo, descripcion FROM series");
+    public function getAllSeries($orderBy = 'titulo') {
+        $stmt = Database::getConnection()->query("SELECT id, titulo, descripcion FROM series ORDER BY $orderBy");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

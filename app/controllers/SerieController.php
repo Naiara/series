@@ -32,9 +32,17 @@ class SerieController {
         //Hay que mostrar la puntuación media de cada serie
         foreach ($seriesBD as $serieBD) {
             $serie = new Serie($serieBD['id'], $serieBD['titulo'], $serieBD['descripcion']);            
-            $serie->setPuntuacionMedia($serie->getAverageRating());
+            $serie->setPuntuacionMedia((float)$serie->getAverageRating());
             $series[] = $serie;
         }
+
+        //Ordenar las series de mayor a menor puntuación
+        usort($series, function($a, $b) {
+            if ($a->getPuntuacionMedia() == $b->getPuntuacionMedia()) {
+                return 0;
+            }
+            return ($a->getPuntuacionMedia() > $b->getPuntuacionMedia()) ? -1 : 1;
+        });
 
         include '../app/views/serie/index.php';
     }
