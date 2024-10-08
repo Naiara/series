@@ -26,11 +26,11 @@ class Usuario {
     }
 
     public function getName() {
-        return $this->username;
+        return $this->name;
     }
 
     public function getEmail() {
-        return $this->username;
+        return $this->email;
     }
 
     public function getRole() {

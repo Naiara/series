@@ -57,15 +57,16 @@ class UsuarioController extends Controller{
             $name = $_POST['name'];
             $username = $_POST['username'];
             $password = $_POST['password'];
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
             $email = $_POST['email'];
-            $role = 'usuario';  // O 'admin' según corresponda
+            $role = $_POST['role'];  // O 'admin' según corresponda
             $usuario = new Usuario(0, $name, $username, $email, $role);
-            $usuario->register($password);
+            $usuario->register($hashed_password);
             // Redirigir a la página de login
-            header('Location: /login');
+            header('Location: /index.php?controller=usuario&action=index');
 
         }
-        include '../app/views/register.php';
+        include '../app/views/user/register.php';
     }
 
     /**
@@ -100,6 +101,28 @@ class UsuarioController extends Controller{
         session_destroy();
         header('Location: index.php?controller=usuario&action=login');
         exit();
+    }
+
+    public function borrar() {
+        if ($_SESSION['user']['role'] === 'admin') {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $data = json_decode(file_get_contents('php://input'), true);
+                $id = $data['id'];
+                
+                $resultado = $this->usuarioModel->deleteUser($id);
+                $resultado = true;
+                if ($resultado) {
+                    echo json_encode(['success' => true]);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'No se ha ejecutado correctamente la consulta']);
+                } 
+            }else{
+                echo json_encode(['success' => false, 'message' => 'No hay envío con post']);
+            }
+        } else {
+            // Mostrar error: acceso no permitido
+                    echo json_encode(['success' => false, 'message' => 'No tienes permisos suficientes']);
+        }
     }
 }
 ?>
