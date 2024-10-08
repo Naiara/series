@@ -82,7 +82,7 @@ class Usuario {
      * Obtiene todos los usuarios
      */
     public function getAllUsers() {
-        $stmt = Database::getConnection()->query("SELECT * FROM usuarios");
+        $stmt = Database::getConnection()->query("SELECT * FROM usuarios order by name, email, username");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

@@ -65,15 +65,21 @@ class UsuarioController extends Controller{
             header('Location: /login');
 
         }
-        include 'app/views/register.php';
+        include '../app/views/register.php';
     }
 
     /**
      * Mostrar la lista de usuarios
      */
     public function index() {
-        $usuarios = $this->usuarioModel->getAllUsers();
-        include 'app/views/user/index.php';
+        $usuariosBD = $this->usuarioModel->getAllUsers();
+        $usuarios = [];
+        //Hay que mostrar la puntuación media de cada serie
+        foreach ($usuariosBD as $usuarioBD) {
+            $usuario = new Usuario($usuarioBD['id'], $usuarioBD['name'], $usuarioBD['username'], $usuarioBD['email'], $usuarioBD['role']);           
+            $usuarios[] = $usuario;
+        }
+        include '../app/views/user/index.php';
     }
 
     /**
