@@ -89,9 +89,14 @@ class Usuario {
     /**
      * Cambia la información de un usuario
      */
-    public function updateUser($id, $username, $password, $role) {
-        $stmt = Database::getConnection()->prepare("UPDATE usuarios SET username = :username, password = :password, role = :role WHERE id = :id");
-        return $stmt->execute(['username' => $username, 'password' => $password, 'role' => $role, 'id' => $id]);
+    public function updateUser($id, $name, $username, $email, $role) {
+        $stmt = Database::getConnection()->prepare("UPDATE usuarios SET username = :username, role = :role, name = :name, email = :email WHERE id = :id");
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':role', $role);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
     }
 
     /**

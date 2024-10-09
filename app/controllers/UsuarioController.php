@@ -70,6 +70,36 @@ class UsuarioController extends Controller{
     }
 
     /**
+     * Editar una serie
+     */
+    public function update() {
+        // Solo el administrador puede añadir series
+        if ($_SESSION['user']['role'] === 'admin') {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $id = $_POST['id'];
+                $name = $_POST['name'];
+                $username = $_POST['username'];
+                $email = $_POST['email'];
+                $role = $_POST['role'];
+                $return = $this->usuarioModel->updateUser($id, $name, $username, $email, $role);
+                // Redirigir a la lista de series
+                if ($return) {
+                    header('Location: index.php?controller=usuario&action=index');
+                }
+                else $error = 'No se ha podido añadir la serie';
+            }else{
+                $id = $_GET['id'];
+                $usuarioDB = $this->usuarioModel->getUserById($id);
+                $usuario = new Usuario($id, $usuarioDB['name'], $usuarioDB['username'], $usuarioDB['email'], $usuarioDB['role']);
+                var_dump($usuario);
+                include '../app/views/user/update.php';
+            }
+        } else {
+            // Mostrar error: acceso no permitido
+        }
+    }
+
+    /**
      * Mostrar la lista de usuarios
      */
     public function index() {

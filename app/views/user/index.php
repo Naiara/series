@@ -24,7 +24,9 @@ foreach ($usuarios as $usuario): ?>
             <td><?php echo ucfirst($usuario->getRole()); ?></td>
             <td>
                 <?php if($usuario->getRole() !== 'admin'){ ?>
-                    <img class="icono editar_usuario" src="img/edit.png" alt=""></a>
+                    <a href="index.php?controller=usuario&action=update&id=<?= $usuario->getId()?>">
+                        <img class="icono editar_usuario" src="img/edit.png" alt="">
+                    </a>
                     <img class="icono eliminar_usuario" data-usuarioid="<?= $usuario->getId()?>" src="img/trash.png" alt=""></a>
                 <?php }else{ ?>
                     <img class="icono" src="img/lock.png" alt="">
