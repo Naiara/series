@@ -14,12 +14,14 @@
 <?php foreach ($series as $serie): ?>
             
         <tr id="serie_<?= $serie->getId() ?>" >
-            <td ><?php echo $serie->getTitulo(); ?></td>
+            <td><?php echo $serie->getTitulo(); ?></td>
+            <td><?php echo $serie->getIsan(); ?></td>
             <td><?php echo $serie->getDescripcion(); ?></td>
-            <td>FALTA</td>
-            <td>FALTA</td>
+            <td><?php echo $serie->getEstreno(); ?></td>
             <td>
-                <img class="icono editar_serie" src="img/edit.png" alt=""></a>
+                <a href="index.php?controller=serie&action=update&id=<?= $serie->getId() ?>">
+                    <img class="icono editar_serie" src="img/edit.png" alt="">
+                </a>
                 <img class="icono eliminar_serie" data-id="<?= $serie->getId()?>" src="img/trash.png" alt=""></a>  
             </td>
         </tr>

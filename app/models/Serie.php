@@ -6,13 +6,17 @@ class Serie {
 
     private $id;
     private $titulo;
+    private $isan;
     private $descripcion;
+    private $estreno;
     private $puntuacion_media;
 
-    public function __construct($id = 0, $titulo = "", $descripcion = "", $pt = 0) {
+    public function __construct($id = 0, $titulo = "", $isan = "", $descripcion = "", $estreno = "",  $pt = 0) {
         $this->id = $id;
         $this->titulo = $titulo;
+        $this->isan = $isan;
         $this->descripcion = $descripcion;
+        $this->estreno = $estreno;
         $this->puntuacion_media = $pt;
     }
 
@@ -24,18 +28,46 @@ class Serie {
         return $this->titulo;
     }
 
+    public function getISAN() {
+        return $this->isan;
+    }
+
     public function getDescripcion() {
         return $this->descripcion;
+    }
+
+    public function getEstreno() {
+        return $this->estreno;
     }
 
     public function getPuntuacionMedia() {
         return $this->puntuacion_media;
     }
 
+    public function setTitulo($titulo) {
+        $this->titulo = $titulo;
+    }
+
+    public function setISAN($isan) {
+        $this->isan = $isan;
+    }
+
+    public function setDescripcion($descripcion) {
+        $this->descripcion = $descripcion;
+    }
+
+    public function setEstreno($estreno) {
+        $this->estreno = $estreno;
+    }
+
     public function setPuntuacionMedia($pt) {
         $this->puntuacion_media = $pt;
     }
 
+
+    /**
+     * Obtiene la puntuación de un usuario para una serie
+     */
     public function getPuntuacionUsuario() {
         $stmt = Database::getConnection()->prepare("SELECT puntuacion FROM valoraciones WHERE usuario_id = :usuario_id AND serie_id = :serie_id");
         $stmt->bindParam(':usuario_id', $_SESSION['user']['id']);
@@ -47,7 +79,7 @@ class Serie {
     /**
      * Añade una nueva serie a la base de datos
      */
-    public function addSerie($titulo, $descripcion, $isan, $estreno) {
+    public function addSerie($titulo, $isan, $descripcion, $estreno) {
         $stmt = Database::getConnection()->prepare("INSERT INTO series (titulo, descripcion, ISAN, estreno) VALUES (:titulo, :descripcion, :ISAN, :estreno)");  
         $stmt->bindParam(':titulo', $titulo);
         $stmt->bindParam(':descripcion', $descripcion);
@@ -60,7 +92,7 @@ class Serie {
     /**
      * Añade una nueva serie a la base de datos
      */
-    public function updateSerie($id, $titulo, $descripcion, $isan, $estreno) {
+    public function updateSerie($id, $titulo, $isan, $descripcion, $estreno) {
         $stmt = Database::getConnection()->prepare("UPDATE series SET titulo = :titulo, descripcion = :descripcion, ISAN = :ISAN, estreno = :estreno WHERE id = :id");
         $stmt->bindParam(':id', $id);
         $stmt->bindParam(':titulo', $titulo);
@@ -75,8 +107,9 @@ class Serie {
      * Obtiene una serie por su ID
      */
     public function getSerieById($id) {
-        $stmt = Database::getConnection()->prepare("SELECT * FROM series WHERE id = :id");
-        $stmt->execute(['id' => $id]);
+        $stmt = Database::getConnection()->prepare("SELECT titulo, descripcion, ISAN, estreno FROM series WHERE id = :id");
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
@@ -84,7 +117,7 @@ class Serie {
      * Obtiene todas las series
      */
     public function getAllSeries($orderBy = 'titulo') {
-        $stmt = Database::getConnection()->query("SELECT id, titulo, descripcion FROM series ORDER BY $orderBy");
+        $stmt = Database::getConnection()->query("SELECT id, titulo, descripcion, ISAN, estreno FROM series ORDER BY $orderBy");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

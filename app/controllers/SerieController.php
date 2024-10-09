@@ -10,6 +10,9 @@ class SerieController {
         $this->serieModel = new Serie();
     }
 
+    /**
+     * Añadir una nueva serie
+     */
     public function add() {
         // Solo el administrador puede añadir series
         if ($_SESSION['user']['role'] === 'admin') {
@@ -18,12 +21,44 @@ class SerieController {
                 $descripcion = $_POST['descripcion'];
                 $isan = $_POST['isan'];
                 $estreno = $_POST['estreno'];
-                $return = $this->serieModel->addSerie($titulo, $descripcion, $isan, $estreno);
+                $return = $this->serieModel->addSerie($titulo, $isan, $descripcion, $estreno);
                 // Redirigir a la lista de series
-                if ($return) include '../app/views/serie/indexAdmin.php';
+                if ($return) {
+                    header('Location: index.php?controller=serie&action=gestion');
+                }
                 else $error = 'No se ha podido añadir la serie';
             }
             include '../app/views/serie/add.php';
+        } else {
+            // Mostrar error: acceso no permitido
+        }
+    }
+
+    /**
+     * Editar una serie
+     */
+    public function update() {
+        // Solo el administrador puede añadir series
+        if ($_SESSION['user']['role'] === 'admin') {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $id = $_POST['id'];
+                $titulo = $_POST['titulo'];
+                $descripcion = $_POST['descripcion'];
+                $isan = $_POST['isan'];
+                $estreno = $_POST['estreno'];
+                $return = $this->serieModel->updateSerie($id, $titulo, $isan, $descripcion, $estreno);
+                // Redirigir a la lista de series
+                if ($return) {
+                    header('Location: index.php?controller=serie&action=gestion');
+                }
+                else $error = 'No se ha podido añadir la serie';
+            }else{
+                $id = $_GET['id'];
+                $serieDB = $this->serieModel->getSerieById($id);
+                $serie = new Serie($id, $serieDB['titulo'], $serieDB['ISAN'], $serieDB['descripcion'], $serieDB['estreno']);
+
+                include '../app/views/serie/update.php';
+            }
         } else {
             // Mostrar error: acceso no permitido
         }
@@ -63,7 +98,8 @@ class SerieController {
 
         //Hay que mostrar la puntuación media de cada serie
         foreach ($seriesBD as $serieBD) {
-            $serie = new Serie($serieBD['id'], $serieBD['titulo'], $serieBD['descripcion']);   
+            //id, titulo, descripcion, ISAN, estreno
+            $serie = new Serie($serieBD['id'], $serieBD['titulo'], $serieBD['ISAN'], $serieBD['descripcion'], $serieBD['estreno']);   
             $series[] = $serie;
         }
 

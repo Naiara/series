@@ -5,10 +5,6 @@ window.onload = function(){
     botonEliminar.forEach(boton => {
         boton.addEventListener('click', eliminarSerie);
     });
-    let botonEditar = document.querySelectorAll('.editar_serie');
-    botonEditar.forEach(boton => {
-        boton.addEventListener('click', editarSerie);
-    });
 
     /**
      * Eliminar serie de la base de datos
@@ -44,7 +40,4 @@ window.onload = function(){
     }
 
 
-    function editarSerie(evento){
-
-    }
 }
