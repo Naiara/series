@@ -56,7 +56,7 @@ class Routing {
             } else {
                 // Clase del controlador no encontrada
                 http_response_code(404);
-                include '../app/views/405.php';
+                include '../app/views/404.php';
             }
         } else {
             // Archivo del controlador no encontrado

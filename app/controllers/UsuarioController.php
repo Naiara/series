@@ -75,6 +75,7 @@ class UsuarioController extends Controller{
     public function update() {
         // Solo el administrador puede añadir series
         if ($_SESSION['user']['role'] === 'admin') {
+            //Admin puede editar cualquier usuario
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $id = $_POST['id'];
                 $name = $_POST['name'];
@@ -94,7 +95,33 @@ class UsuarioController extends Controller{
                 var_dump($usuario);
                 include '../app/views/user/update.php';
             }
-        } else {
+        }elseif ($_SESSION['user']['id'] == $_POST['id']) {
+            //Usuario puede editar su perfil
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $id = $_SESSION['user']['id'];
+                $name = $_POST['name'];
+                $username = $_POST['username'];
+                $email = $_POST['email'];
+                $role = $_SESSION['user']['role'];
+
+                $_SESSION['user']['name'] = $name;
+                $_SESSION['user']['username'] = $username;
+                $_SESSION['user']['email'] = $email;
+
+                $return = $this->usuarioModel->updateUser($id, $name, $username, $email, $role);
+                // Redirigir a la lista de series
+                if ($return) {
+                    header('Location: index.php?controller=usuario&action=perfil');
+                }
+                else $error = 'No se ha podido añadir la serie';
+            }else{
+                $id = $_SESSION['user']['id'];
+                $usuarioDB = $this->usuarioModel->getUserById($id);
+                $usuario = new Usuario($id, $usuarioDB['name'], $usuarioDB['username'], $usuarioDB['email'], $usuarioDB['role']);
+                var_dump($usuario);
+                include '../app/views/user/update.php';
+            }
+        }else {
             // Mostrar error: acceso no permitido
         }
     }

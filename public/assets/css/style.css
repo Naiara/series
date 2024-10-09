@@ -32,3 +32,6 @@ header {
     margin: 0 10px;
     cursor: pointer;
 }
+.error {
+    border: 1px solid red;
+}

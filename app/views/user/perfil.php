@@ -5,4 +5,5 @@
     <p><strong>Nombre de usuario:</strong> <?php echo htmlspecialchars($usuario['username'], ENT_QUOTES, 'UTF-8'); ?></p>
     <p><strong>Email:</strong> <?php echo htmlspecialchars($usuario['email'], ENT_QUOTES, 'UTF-8'); ?></p>
     <p><strong>Role:</strong> <?php echo htmlspecialchars($usuario['role'], ENT_QUOTES, 'UTF-8'); ?></p>
-<?php include '../app/views/general/footer.php'; ?>
+    <a href="index.php?controller=usuario&action=update&id=<?= $usuario['id'] ?>" class="btn btn-primary">Editar</a>
+    <?php include '../app/views/general/footer.php'; ?>
