@@ -103,6 +103,9 @@ class UsuarioController extends Controller{
         exit();
     }
 
+    /**
+     * Funcionalidad para borrar un usuario
+     */
     public function borrar() {
         if ($_SESSION['user']['role'] === 'admin') {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {

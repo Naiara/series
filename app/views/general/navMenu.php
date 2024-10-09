@@ -8,9 +8,9 @@
       <?php
         if($_SESSION['user']['role'] == 'admin'){
       ?>
-          <a  class="nav-link" href="/index.php?controller=serie&action=add">Añadir serie</a>
+          <a  class="nav-link" href="/index.php?controller=serie&action=gestion">Gestionar series</a>
           <!-- <a  class="nav-link" href="/index.php?controller=serie&action=index">Editar series</a> -->
-          <a  class="nav-link" href="/index.php?controller=usuario&action=index">Usuarios</a>
+          <a  class="nav-link" href="/index.php?controller=usuario&action=index">Gestionar usuarios</a>
       <?php
         }
       ?>

@@ -47,9 +47,28 @@ class Serie {
     /**
      * Añade una nueva serie a la base de datos
      */
-    public function addSerie($titulo, $descripcion) {
-        $stmt = Database::getConnection()->prepare("INSERT INTO series (titulo, descripcion) VALUES (:titulo, :descripcion)");
-        return $stmt->execute(['titulo' => $titulo, 'descripcion' => $descripcion]);
+    public function addSerie($titulo, $descripcion, $isan, $estreno) {
+        $stmt = Database::getConnection()->prepare("INSERT INTO series (titulo, descripcion, ISAN, estreno) VALUES (:titulo, :descripcion, :ISAN, :estreno)");  
+        $stmt->bindParam(':titulo', $titulo);
+        $stmt->bindParam(':descripcion', $descripcion);
+        $stmt->bindParam(':ISAN', $isan);
+        $stmt->bindParam(':estreno', $estreno);
+
+        return $stmt->execute();
+    }
+
+    /**
+     * Añade una nueva serie a la base de datos
+     */
+    public function updateSerie($id, $titulo, $descripcion, $isan, $estreno) {
+        $stmt = Database::getConnection()->prepare("UPDATE series SET titulo = :titulo, descripcion = :descripcion, ISAN = :ISAN, estreno = :estreno WHERE id = :id");
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':titulo', $titulo);
+        $stmt->bindParam(':descripcion', $descripcion);
+        $stmt->bindParam(':ISAN', $isan);
+        $stmt->bindParam(':estreno', $estreno);
+
+        return $stmt->execute();
     }
 
     /**

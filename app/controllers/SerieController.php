@@ -10,14 +10,18 @@ class SerieController {
         $this->serieModel = new Serie();
     }
 
-    public function addSerie() {
+    public function add() {
         // Solo el administrador puede añadir series
         if ($_SESSION['user']['role'] === 'admin') {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $titulo = $_POST['titulo'];
                 $descripcion = $_POST['descripcion'];
-                $this->serieModel->addSerie($titulo, $descripcion);
+                $isan = $_POST['isan'];
+                $estreno = $_POST['estreno'];
+                $return = $this->serieModel->addSerie($titulo, $descripcion, $isan, $estreno);
                 // Redirigir a la lista de series
+                if ($return) include '../app/views/serie/indexAdmin.php';
+                else $error = 'No se ha podido añadir la serie';
             }
             include '../app/views/serie/add.php';
         } else {
@@ -25,6 +29,9 @@ class SerieController {
         }
     }
 
+    /**
+     * Lista de todas las series ordenada por puntuación
+     */
     public function index() {
         $seriesBD = $this->serieModel->getAllSeries();
         $series = [];
@@ -46,6 +53,24 @@ class SerieController {
 
         include '../app/views/serie/index.php';
     }
+
+    /**
+     * Lista para publicar las series y editarlas
+     */
+    public function gestion() {
+        $seriesBD = $this->serieModel->getAllSeries();
+        $series = [];
+
+        //Hay que mostrar la puntuación media de cada serie
+        foreach ($seriesBD as $serieBD) {
+            $serie = new Serie($serieBD['id'], $serieBD['titulo'], $serieBD['descripcion']);   
+            $series[] = $serie;
+        }
+
+        include '../app/views/serie/indexAdmin.php';
+    }
+
+
 
     /**
      * Series con puntuación del usuario concreto
@@ -82,6 +107,31 @@ class SerieController {
         } else {
             // Mostrar error: acceso no permitido
             echo json_encode(['success' => false, 'message' => 'Sessión no iciciada']);
+        }
+    }
+
+    /**
+     * Funcionalidad para borrar un serie
+     */
+    public function delete() {
+        if ($_SESSION['user']['role'] === 'admin') {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $data = json_decode(file_get_contents('php://input'), true);
+                $id = $data['id'];
+                
+                $resultado = $this->serieModel->deleteSerie($id);
+                $resultado = true;
+                if ($resultado) {
+                    echo json_encode(['success' => true]);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'No se ha ejecutado correctamente la consulta']);
+                } 
+            }else{
+                echo json_encode(['success' => false, 'message' => 'No hay envío con post']);
+            }
+        } else {
+            // Mostrar error: acceso no permitido
+                    echo json_encode(['success' => false, 'message' => 'No tienes permisos suficientes']);
         }
     }
 }
