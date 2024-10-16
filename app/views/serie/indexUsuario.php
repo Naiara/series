@@ -7,8 +7,11 @@
             <td title="<?= $serie->getDescripcion(); ?>"><?php echo $serie->getTitulo(); ?></td>
            <!--  <td><?php echo $serie->getDescripcion(); ?></td> -->
             <td><?php 
-                echo $serie->getPuntuacionUsuario() . ' - ' . $serie->getPuntuacionMedia();
-                $puntuacion = $serie->getPuntuacionUsuario();
+                //echo $serie->getPuntuacionUsuario() . ' - ' . $serie->getPuntuacionMedia();
+                $puntuacion = $serie->getPuntuacionMedia();
+                if ($serie->getPuntuacionUsuario() == null) {
+                    $puntuacion = 0;
+                }
                 for ($i = 1; $i <= floor($puntuacion); $i++) {
                     $id_estrella = 'estrella' . $serie->getId() . '_' . $i;
                     ?>
