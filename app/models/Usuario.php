@@ -99,6 +99,13 @@ class Usuario {
         return $stmt->execute();
     }
 
+    public function updatePassword($id, $password) {
+        $stmt = Database::getConnection()->prepare("UPDATE usuarios SET password = :password WHERE id = :id");
+        $stmt->bindParam(':password', $password);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
+
     /**
      * Elimina un usuario por su ID
      */

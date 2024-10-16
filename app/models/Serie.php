@@ -121,6 +121,12 @@ class Serie {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getAllSeriesByUser($id) {
+        $stmt = Database::getConnection()->prepare("SELECT s.id, titulo, descripcion, ISAN, estreno, puntuacion FROM series s LEFT JOIN valoraciones v ON s.id = v.serie_id AND v.usuario_id = :usuario_id WHERE s.id IS NOT NULL");
+        $stmt->execute(['usuario_id' => $id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     /**
      * Actualiza la información de una serie
      */

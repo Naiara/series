@@ -126,6 +126,38 @@ class UsuarioController extends Controller{
         }
     }
 
+    public function updatePass() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id'];
+            $password = $_POST['password'];
+            $newPassword = $_POST['newPassword'];
+            $newPassword2 = $_POST['newPassword2'];
+
+            //Comprobar que la contraseña antigua es correcta
+            $user = $this->usuarioModel->getUserById($id);
+            if (!password_verify($password, $user->password)) {
+                $error = 'Contraseña antigua incorrecta';
+                include '../app/views/user/updatePass.php';
+                exit();
+            }elseif ($newPassword != $newPassword2) {
+                $error = 'Las contraseñas no coinciden';
+                include '../app/views/user/updatePass.php';
+                exit();
+            }else{
+                $hashed_password = password_hash($newPassword, PASSWORD_DEFAULT);
+                $return = $this->usuarioModel->updatePassword($id, $hashed_password);
+                // Redirigir a la lista de series
+                if ($return) {
+                    header('Location: index.php?controller=usuario&action=perfil');
+                }
+                else $error = 'No se ha podido añadir la serie';
+            }
+        }else{
+            $id = $_GET['id'];
+            include '../app/views/user/updatePass.php';
+        }
+    }
+
     /**
      * Mostrar la lista de usuarios
      */

@@ -55,7 +55,7 @@ class SerieController {
             }else{
                 $id = $_GET['id'];
                 $serieDB = $this->serieModel->getSerieById($id);
-                $serie = new Serie($id, $serieDB['titulo'], $serieDB['ISAN'], $serieDB['descripcion'], $serieDB['estreno']);
+                $serie = new Serie($id, $serieDB['titulo'], $serieDB['ISAN'], $serieDB['descripcion'],  $serieDB['estreno']);
 
                 include '../app/views/serie/update.php';
             }
@@ -73,7 +73,7 @@ class SerieController {
 
         //Hay que mostrar la puntuación media de cada serie
         foreach ($seriesBD as $serieBD) {
-            $serie = new Serie($serieBD['id'], $serieBD['titulo'], $serieBD['descripcion']);            
+            $serie = new Serie($serieBD['id'], $serieBD['titulo'], $serieBD['ISAN'], $serieBD['descripcion'], $serieBD['estreno']);            
             $serie->setPuntuacionMedia((float)$serie->getAverageRating());
             $series[] = $serie;
         }
@@ -112,13 +112,14 @@ class SerieController {
      * Series con puntuación del usuario concreto
      */
     public function puntuar() {
-        $seriesBD = $this->serieModel->getAllSeries();
+        //$seriesBD = $this->serieModel->getAllSeries();
+        $seriesBD = $this->serieModel->getAllSeriesByUser($_SESSION['user']['id']);
         $series = [];
 
         //Hay que mostrar la puntuación media de cada serie
         foreach ($seriesBD as $serieBD) {
-            $serie = new Serie($serieBD['id'], $serieBD['titulo'], $serieBD['descripcion']);            
-            //$serie->setPuntuacionMedia($serie->getAverageRating());
+            $serie = new Serie($serieBD['id'], $serieBD['titulo'], $serieBD['ISAN'], $serieBD['descripcion'], $serieBD['estreno']);            
+            $serie->setPuntuacionMedia($serieBD['puntuacion']);
             $series[] = $serie;
         }
 

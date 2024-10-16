@@ -6,4 +6,6 @@
     <p><strong>Email:</strong> <?php echo htmlspecialchars($usuario['email'], ENT_QUOTES, 'UTF-8'); ?></p>
     <p><strong>Role:</strong> <?php echo htmlspecialchars($usuario['role'], ENT_QUOTES, 'UTF-8'); ?></p>
     <a href="index.php?controller=usuario&action=update&id=<?= $usuario['id'] ?>" class="btn btn-primary">Editar</a>
+    <a href="index.php?controller=usuario&action=updatePass&id=<?= $usuario['id'] ?>" class="btn btn-danger">Cambiar contraseña</a>
+    
     <?php include '../app/views/general/footer.php'; ?>

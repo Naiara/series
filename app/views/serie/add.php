@@ -17,3 +17,4 @@
         <input type="submit" value="Add Series">
     </form>
 <?php require_once '../app/views/general/footer.php'; ?>
+<script src="https://cdn.tiny.cloud/1/ruxaeqofx0hkoil6eqeq4oj6lusi5duxpv68t9pbj488js85/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>

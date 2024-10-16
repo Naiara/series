@@ -1,5 +1,5 @@
 window.onload = function(){
-
+    //ruxaeqofx0hkoil6eqeq4oj6lusi5duxpv68t9pbj488js85 api KEY PARA TINY
     //Añadir evento edición de serie
     let botonEliminar = document.querySelectorAll('.eliminar_serie');
     botonEliminar.forEach(boton => {
