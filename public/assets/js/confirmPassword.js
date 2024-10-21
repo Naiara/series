@@ -1,15 +1,15 @@
 window.onload = function(){
     //Añadir evento para comprobar que las dos contraseña coinciden
-    let password = document.getElementById('newPassword');
+    let password = document.getElementById('password');
     let password2 = document.getElementById('confirmPassword');
 
     password2.addEventListener('keyup', comprobarPassword);
 
     document.getElementById('passwordForm').addEventListener('submit', comprobarPassword);
 
-    function comprobarPassword(){        
+    function comprobarPassword(event){        
         // Obtener los valores de las contraseñas
-        var newPassword = document.getElementById('newPassword').value;
+        var newPassword = document.getElementById('password').value;
         var confirmPassword = document.getElementById('confirmPassword').value;
 
         // Comprobar si las contraseñas coinciden

@@ -46,7 +46,6 @@ class UsuarioController extends Controller{
                 $error = 'Usuario incorrectos';
                 
             }
-            exit();
         }
         include '../app/views/user/login.php';
     }
@@ -73,7 +72,7 @@ class UsuarioController extends Controller{
      * Editar una serie
      */
     public function update() {
-        // Solo el administrador puede añadir usuarios
+        // Solo el administrador puede cambiar otros usuarios
         if ($_SESSION['user']['role'] === 'admin') {
             //Admin puede editar cualquier usuario
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -93,7 +92,7 @@ class UsuarioController extends Controller{
                 $usuario = $this->usuarioModel->getUserById($id);
                 include '../app/views/user/update.php';
             }
-        }elseif ($_SESSION['user']['id'] == $_POST['id']) {
+        }elseif ($_SESSION['user']['id'] == $_GET['id'] || $_SESSION['user']['id'] == $_POST['id']) {
             //Usuario puede editar su perfil
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $id = $_SESSION['user']['id'];
@@ -126,7 +125,7 @@ class UsuarioController extends Controller{
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'];
             $password = $_POST['currentPassword'];
-            $newPassword = $_POST['newPassword'];
+            $newPassword = $_POST['password'];
             $newPassword2 = $_POST['confirmPassword'];
 
             //Comprobar que la contraseña antigua es correcta
@@ -144,7 +143,7 @@ class UsuarioController extends Controller{
                 $return = $this->usuarioModel->updatePassword($id, $hashed_password);
                 // Redirigir a la lista de series
                 if ($return) {
-                    header('Location: index.php?controller=usuario&action=perfil');
+                    header('Location: index.php?controller=usuario&action=index');
                 }
                 else $error = 'No se ha podido añadir la serie';
             }

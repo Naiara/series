@@ -1,7 +1,12 @@
 <?php
   if(isset($_SESSION['user'])){
-    $controller = $_GET['controller'];
-    $action = $_GET['action'];
+    if(isset($_GET['controller']) && isset($_GET['action'])){
+      $controller = $_GET['controller'];
+      $action = $_GET['action'];
+    }else{
+      $controller = 'usuario';
+      $action = 'perfil';
+    }
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">  
   <div class="container-fluid">

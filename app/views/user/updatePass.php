@@ -1,12 +1,18 @@
-<?php include_once '../app/views/general/header.php';?>
+<?php include_once '../app/views/general/header.php';
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $id = $_POST['id'];
+    }else{
+        $id = $usuario->getId();
+    }
+?>
 
 <div class="row justify-content-center">
     <div class="col-md-6">
-        <h2 class="text-center mb-4">Cambiar datos usuario</h2>
+        <h2 class="text-center mb-4">Cambiar contraseña usuario</h2>
 
         <!-- Formulario -->
         <form method="POST" action="index.php?controller=usuario&action=updatePass">
-            <input type="hidden" name="id" value="<?= $usuario->getId() ?>">
+            <input type="hidden" name="id" value="<?= $id ?>">
             <div class="mb-3">
                 <label for="currentPassword" class="form-label">Contraseña Actual</label>
                 <input type="password" class="form-control" id="currentPassword" name="currentPassword" placeholder="Introduce tu contraseña actual" required>
@@ -14,8 +20,8 @@
 
             <!-- Nueva contraseña -->
             <div class="mb-3">
-                <label for="newPassword" class="form-label">Nueva Contraseña</label>
-                <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Introduce una nueva contraseña" required>
+                <label for="password" class="form-label">Nueva Contraseña</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Introduce una nueva contraseña" required>
             </div>
 
             <!-- Confirmar nueva contraseña -->

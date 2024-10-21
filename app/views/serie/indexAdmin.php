@@ -19,8 +19,8 @@
             <td><?php echo $serie->getDescripcion(); ?></td>
             <td><?php echo $serie->getEstreno(); ?></td>
             <td>
-                <a href="index.php?controller=serie&action=update&id=<?= $serie->getId() ?>">
-                    <img class="icono editar_serie" src="img/edit.png" alt="">
+                <a title="Editar serie" href="index.php?controller=serie&action=update&id=<?= $serie->getId() ?>">
+                    <img class="icono editar_serie" src="img/refresh.png" alt="">
                 </a>
                 <img class="icono eliminar_serie" data-id="<?= $serie->getId()?>" src="img/trash.png" alt=""></a>  
             </td>

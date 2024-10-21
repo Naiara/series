@@ -24,12 +24,15 @@ foreach ($usuarios as $usuario): ?>
             <td><?php echo ucfirst($usuario->getRole()); ?></td>
             <td>
                 <?php if($usuario->getRole() !== 'admin'){ ?>
-                    <a href="index.php?controller=usuario&action=update&id=<?= $usuario->getId()?>">
-                        <img class="icono editar_usuario" src="img/edit.png" alt="">
+                    <a title="Editar serie" href="index.php?controller=usuario&action=update&id=<?= $usuario->getId()?>">
+                        <img class="icono editar_usuario" src="img/refresh.png" alt="">
                     </a>
-                    <img class="icono eliminar_usuario" data-usuarioid="<?= $usuario->getId()?>" src="img/trash.png" alt=""></a>
+                    <a title="Cambiar contraseña" href="index.php?controller=usuario&action=updatePass&id=<?= $usuario->getId()?>">
+                        <img class="icono cambiar_password" src="img/edit.png" alt="">
+                    </a>
+                    <img title="Elimar usuario" class="icono eliminar_usuario" data-usuarioid="<?= $usuario->getId()?>" src="img/trash.png" alt=""></a>
                 <?php }else{ ?>
-                    <img class="icono" src="img/lock.png" alt="">
+                    <img title="Acceso denegado" class="icono" src="img/lock.png" alt="">
                 <?php } ?>    
             </td>
         </tr>
