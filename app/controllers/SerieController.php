@@ -21,12 +21,23 @@ class SerieController {
                 $descripcion = $_POST['descripcion'];
                 $isan = $_POST['isan'];
                 $estreno = $_POST['estreno'];
-                $return = $this->serieModel->addSerie($titulo, $isan, $descripcion, $estreno);
+                
+                if ($this->validarAnioEstreno($estreno) && $this->validarISAN($isan)) {
+                    $return = $this->serieModel->addSerie($titulo, $isan, $descripcion, $estreno);
+                    // Redirigir a la lista de series
+                    if ($return) {
+                        header('Location: index.php?controller=serie&action=gestion');
+                    }
+                    else $error = 'No se ha podido añadir la serie';
+                } else {
+                    $error = 'El año de estreno o el ISAN no son válidos';
+                }
+                /* $return = $this->serieModel->addSerie($titulo, $isan, $descripcion, $estreno);
                 // Redirigir a la lista de series
                 if ($return) {
                     header('Location: index.php?controller=serie&action=gestion');
                 }
-                else $error = 'No se ha podido añadir la serie';
+                else $error = 'No se ha podido añadir la serie'; */
             }
             include '../app/views/serie/add.php';
         } else {
@@ -46,12 +57,22 @@ class SerieController {
                 $descripcion = $_POST['descripcion'];
                 $isan = $_POST['isan'];
                 $estreno = $_POST['estreno'];
-                $return = $this->serieModel->updateSerie($id, $titulo, $isan, $descripcion, $estreno);
+                if ($this->validarAnioEstreno($estreno) && $this->validarISAN($isan)) {
+                    $return = $this->serieModel->updateSerie($id, $titulo, $isan, $descripcion, $estreno);
+                    // Redirigir a la lista de series
+                    if ($return) {
+                        header('Location: index.php?controller=serie&action=gestion');
+                    }
+                    else $error = 'No se ha podido añadir la serie';
+                } else {
+                    $error = 'El año de estreno o el ISAN no son válidos';
+                }
+                /* $return = $this->serieModel->updateSerie($id, $titulo, $isan, $descripcion, $estreno);
                 // Redirigir a la lista de series
                 if ($return) {
                     header('Location: index.php?controller=serie&action=gestion');
                 }
-                else $error = 'No se ha podido añadir la serie';
+                else $error = 'No se ha podido añadir la serie'; */
             }else{
                 $id = $_GET['id'];
                 $serieDB = $this->serieModel->getSerieById($id);
@@ -60,8 +81,10 @@ class SerieController {
                 include '../app/views/serie/update.php';
             }
         } else {
-            // Mostrar error: acceso no permitido
+            $error = 'Acceso no permitido';
         }
+        
+        include '../app/views/serie/update.php';
     }
 
     /**
@@ -170,6 +193,27 @@ class SerieController {
             // Mostrar error: acceso no permitido
                     echo json_encode(['success' => false, 'message' => 'No tienes permisos suficientes']);
         }
+    }
+
+    
+    
+    // Función para validar el año de estreno
+    function validarAnioEstreno($anio) {
+        $anioActual = date("Y"); // Obtiene el año actual
+        // Verifica que el año es un número entre 1800 y el año actual
+        if (is_numeric($anio) && $anio >= 1800 && $anio <= $anioActual) {
+            return true;
+        }
+        return false;
+    }
+
+    // Función para validar el ISAN (8 dígitos)
+    function validarISAN($isan) {
+        // Verifica que el ISAN sea un número de 8 dígitos
+        if (preg_match('/^\d{8}$/', $isan)) {
+            return true;
+        }
+        return false;
     }
 }
 ?>

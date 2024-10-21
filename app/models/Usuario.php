@@ -6,6 +6,7 @@ class Usuario {
     private $id;
     private $name;
     private $username;
+    private $password;
     private $email;
     private $role;
 
@@ -29,12 +30,20 @@ class Usuario {
         return $this->name;
     }
 
+    public function getPassword() {
+        return $this->password;
+    }
+
     public function getEmail() {
         return $this->email;
     }
 
     public function getRole() {
         return $this->role;
+    }
+
+    public function setPassword($password) {
+        return $this->password = $password;
     }
     
     // Método para validar contraseña
@@ -61,21 +70,21 @@ class Usuario {
         return $stmt->execute();
     }    
 
-    // Método para obtener un usuario por su nombre de usuario
-    public static function obtenerPorNombre($username) {
-        $stmt = Database::getConnection()->prepare("SELECT * FROM usuarios WHERE username = :username");
-        $stmt->bindParam(':username', $username);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
     /**
      * Obtiene un usuario por su ID
      */
     public function getUserById($id) {
         $stmt = Database::getConnection()->prepare("SELECT * FROM usuarios WHERE id = :id");
         $stmt->execute(['id' => $id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $usuarioDB = $stmt->fetch(PDO::FETCH_ASSOC);
+        $this->id = $id;
+        $this->name = $usuarioDB['name'];
+        $this->username = $usuarioDB['username'];
+        $this->email = $usuarioDB['email'];
+        $this->role = $usuarioDB['role'];
+        $this->password = $usuarioDB['password'];
+
+        return $this;      
     }
 
     /**

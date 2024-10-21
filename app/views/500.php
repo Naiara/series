@@ -9,9 +9,6 @@
 </head>
 <body>
     <h1>500</h1>
-    <?php if(isset($error)): ?>
-        <div class="error"><?= $error ?></div>
-    <?php endif; ?>
     <p>Oops! Parece que ha habido algún problema.</p>
     <p><a href="/">Go back to the homepage</a></p>
 </body>

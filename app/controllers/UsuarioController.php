@@ -38,7 +38,7 @@ class UsuarioController extends Controller{
                     'role' => $user->role
                 ];  // Guardamos la sesión del usuario
                 //$_SESSION['role'] = $usuario['role']; // 'admin' o 'usuario'
-
+                var_dump($_SESSION['user']);
                 // Redirigir a la página principal
                 header('Location: index.php?controller=usuario&action=perfil');//controller=usuarios&action=index
             } else {
@@ -73,7 +73,7 @@ class UsuarioController extends Controller{
      * Editar una serie
      */
     public function update() {
-        // Solo el administrador puede añadir series
+        // Solo el administrador puede añadir usuarios
         if ($_SESSION['user']['role'] === 'admin') {
             //Admin puede editar cualquier usuario
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -90,9 +90,7 @@ class UsuarioController extends Controller{
                 else $error = 'No se ha podido añadir la serie';
             }else{
                 $id = $_GET['id'];
-                $usuarioDB = $this->usuarioModel->getUserById($id);
-                $usuario = new Usuario($id, $usuarioDB['name'], $usuarioDB['username'], $usuarioDB['email'], $usuarioDB['role']);
-                var_dump($usuario);
+                $usuario = $this->usuarioModel->getUserById($id);
                 include '../app/views/user/update.php';
             }
         }elseif ($_SESSION['user']['id'] == $_POST['id']) {
@@ -116,9 +114,7 @@ class UsuarioController extends Controller{
                 else $error = 'No se ha podido añadir la serie';
             }else{
                 $id = $_SESSION['user']['id'];
-                $usuarioDB = $this->usuarioModel->getUserById($id);
-                $usuario = new Usuario($id, $usuarioDB['name'], $usuarioDB['username'], $usuarioDB['email'], $usuarioDB['role']);
-                var_dump($usuario);
+                $usuario = $this->usuarioModel->getUserById($id);
                 include '../app/views/user/update.php';
             }
         }else {
@@ -129,13 +125,13 @@ class UsuarioController extends Controller{
     public function updatePass() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'];
-            $password = $_POST['password'];
+            $password = $_POST['currentPassword'];
             $newPassword = $_POST['newPassword'];
-            $newPassword2 = $_POST['newPassword2'];
+            $newPassword2 = $_POST['confirmPassword'];
 
             //Comprobar que la contraseña antigua es correcta
             $user = $this->usuarioModel->getUserById($id);
-            if (!password_verify($password, $user->password)) {
+            if (!password_verify($password, $user->getPassword())) {
                 $error = 'Contraseña antigua incorrecta';
                 include '../app/views/user/updatePass.php';
                 exit();
@@ -154,6 +150,7 @@ class UsuarioController extends Controller{
             }
         }else{
             $id = $_GET['id'];
+            $usuario = $this->usuarioModel->getUserById($id);
             include '../app/views/user/updatePass.php';
         }
     }
