@@ -1,4 +1,5 @@
 window.onload = function(){
+    alert('confirmPassword.js cargado');
     //Añadir evento para comprobar que las dos contraseña coinciden
     let password = document.getElementById('password');
     let password2 = document.getElementById('confirmPassword');

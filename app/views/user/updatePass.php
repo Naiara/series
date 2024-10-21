@@ -43,4 +43,4 @@
 <?php include '../app/views/general/footer.php'; ?>
 
 <!-- cargar script para confirmar contraseña -->
-<script src="../app/assets/js/confirmPassword.js"></script>
+<script src="../assets/js/confirmPassword.js"></script>
