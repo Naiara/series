@@ -27,11 +27,11 @@
                 </div>
                 <div class="mb-3">
                     <label for="isan" class="form-label">ISAN:</label>
-                    <input type="text" class="form-control" id="isan" name="isan" placeholder="Introduce el ISAN" value="<?= $isan ?>" required maxlength="8">
+                    <input type="text" class="form-control" id="isan" name="isan" placeholder="Introduce el ISAN" value="<?= $isan ?>" required maxlength="8" minlength="8">
                 </div>
                 <div class="mb-3">
                     <label for="estreno" class="form-label">Año de estreno:</label>
-                    <input type="text" class="form-control" id="estreno" name="estreno" placeholder="Introduce el año de estreno" value="<?= $estreno ?>" required>
+                    <input type="text" class="form-control" id="estreno" name="estreno" placeholder="Introduce el año de estreno" value="<?= $estreno ?>" required maxlength="4" minlength="4">
                 </div>
                 <div class="mb-3">
                     <label for="descripcion" class="form-label">Descripción:</label>
