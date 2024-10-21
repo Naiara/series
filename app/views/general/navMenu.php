@@ -1,5 +1,7 @@
 <?php
   if(isset($_SESSION['user'])){
+    $controller = $_GET['controller'];
+    $action = $_GET['action'];
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">  
   <div class="container-fluid">
@@ -10,25 +12,25 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
               <li class="nav-item">
-                <a class="nav-link active" href="/index.php?controller=serie&action=index">Todas las series</a>
+                <a class="<?= ($controller == 'serie' && $action == 'index') ? 'active':'' ?> nav-link" href="/index.php?controller=serie&action=index">Todas las series</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/index.php?controller=serie&action=puntuar">Mis puntuaciones</a>
+                <a class="<?= ($controller == 'serie' && $action == 'puntuar') ? 'active':'' ?> nav-link" href="/index.php?controller=serie&action=puntuar">Mis puntuaciones</a>
               </li>
               <?php
                 if($_SESSION['user']['role'] == 'admin'){
               ?>
                   <li class="nav-item">
-                    <a class="nav-link" href="/index.php?controller=serie&action=gestion">Gestionar series</a>
+                    <a class="<?= ($controller == 'serie' && $action == 'gestion') ? 'active':'' ?> nav-link" href="/index.php?controller=serie&action=gestion">Gestionar series</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/index.php?controller=usuario&action=index">Gestionar usuarios</a>
+                    <a class="<?= ($controller == 'usuario' && $action == 'index') ? 'active':'' ?> nav-link" href="/index.php?controller=usuario&action=index">Gestionar usuarios</a>
                   </li>
               <?php
                 } 
               ?>
               <li class="nav-item">
-                <a class="nav-link" href="/index.php?controller=usuario&action=perfil">Mi perfil</a>
+                <a class="<?= ($controller == 'usuario' && $action == 'perfil') ? 'active':'' ?> nav-link" href="/index.php?controller=usuario&action=perfil">Mi perfil</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="/index.php?controller=usuario&action=logout">Salir</a>
