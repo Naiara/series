@@ -9,7 +9,7 @@
             <td><?php 
                 //echo $serie->getPuntuacionUsuario() . ' - ' . $serie->getPuntuacionMedia();
                 $puntuacion = $serie->getPuntuacionMedia();
-                if ($serie->getPuntuacionUsuario() == null) {
+                if ($puntuacion == null) {
                     $puntuacion = 0;
                 }
                 for ($i = 1; $i <= floor($puntuacion); $i++) {
