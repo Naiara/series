@@ -1,12 +1,10 @@
 window.onload = function(){
-    alert('confirmPassword.js cargado');
     //Añadir evento para comprobar que las dos contraseña coinciden
-    let password = document.getElementById('password');
     let password2 = document.getElementById('confirmPassword');
 
     password2.addEventListener('keyup', comprobarPassword);
 
-    document.getElementById('passwordForm').addEventListener('submit', comprobarPassword);
+    //document.getElementById('passwordForm').addEventListener('submit', comprobarPassword);
 
     function comprobarPassword(event){        
         // Obtener los valores de las contraseñas

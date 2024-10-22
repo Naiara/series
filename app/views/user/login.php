@@ -6,7 +6,7 @@
         echo 'No hay usuario';
     }
  */
-    if (isset($error)) echo $error;
+    //if (isset($error)) echo $error;
 ?>
 
 <div class="row justify-content-center">
