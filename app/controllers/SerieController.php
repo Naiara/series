@@ -78,7 +78,7 @@ class SerieController {
                 $serieDB = $this->serieModel->getSerieById($id);
                 $serie = new Serie($id, $serieDB['titulo'], $serieDB['ISAN'], $serieDB['descripcion'],  $serieDB['estreno']);
 
-                include '../app/views/serie/update.php';
+                //include '../app/views/serie/update.php';
             }
         } else {
             $error = 'Acceso no permitido';
@@ -149,6 +149,9 @@ class SerieController {
         include '../app/views/serie/indexUsuario.php';
     }
 
+    /**
+     * Puntuar una serie
+     */
     public function puntuarSerie(){
         if (isset($_SESSION['user'])) {
             $id_usuario = $_SESSION['user']['id'];

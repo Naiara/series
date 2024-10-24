@@ -12,6 +12,9 @@ class UsuarioController extends Controller{
         $this->usuarioModel = new Usuario();
     }
 
+    /**
+     * Gestión del login de usuario
+     */
     public function login() {
         // Aquí procesarías el login
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -50,6 +53,9 @@ class UsuarioController extends Controller{
         include '../app/views/user/login.php';
     }
 
+    /**
+     * Registro de usuario
+     */
     public function register() {
         // Aquí procesarías el registro
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -121,6 +127,9 @@ class UsuarioController extends Controller{
         }
     }
 
+    /**
+     * Editar la contraseña de un usuario
+     */
     public function updatePass() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'];
