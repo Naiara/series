@@ -8,6 +8,7 @@
       $action = 'perfil';
     }
 ?>
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">  
   <div class="container-fluid">
     <a class="navbar-brand" href="/index.php?controller=serie&action=index">Mi Sitio Web</a>
@@ -43,7 +44,7 @@
         </ul>
     </div>
   </div>
-</nav>
+</nav>'
 
 <?php
   }

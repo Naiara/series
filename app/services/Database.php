@@ -24,4 +24,7 @@ class Database {
         return self::$instance->pdo;
     }
 }
+
+
+Database::getConnection()
 ?>

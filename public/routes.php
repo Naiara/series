@@ -14,6 +14,17 @@ class Routing {
             header('Location: /index.php?controller=usuario&action=login');
             exit();
         }
+
+       /*  $sesion = '';
+        if(isset($_SESSION['usuario'])){
+            if ($_SESSION['usuario']['tipo'] == 'admin'){
+                $sesion = 'admin';
+            }
+        } */
+
+
+
+
     }
 
     /**
