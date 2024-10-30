@@ -1,10 +1,9 @@
 <?php
 // UsuariosController.php
-require_once '../app/controllers/Controller.php';
 require_once '../app/models/Usuario.php';
 require_once '../app/services/Logger.php';
 
-class UsuarioController extends Controller{
+class UsuarioController{
 
     private $usuarioModel;
 
